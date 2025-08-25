@@ -16,7 +16,7 @@ int	main(void) {
 			phoneBook.displayContacts();
 			phoneBook.searchContact();
 		} else if (command == "HELP") {
-			std::cout << "Available commands: ADD, SEARCH, HELP, EXIT" << std::endl;
+			phoneBook.giveHelp();
 		} else {
 			std::cout << "Invalid command. Please enter ADD, SEARCH, HELP or EXIT." << std::endl;
 		}

@@ -14,6 +14,7 @@ class PhoneBook {
 	void addContact();
 	void displayContacts() const;
 	void searchContact() const;
+	void giveHelp() const;
 };
 
 #endif // PHONEBOOK_HPP
