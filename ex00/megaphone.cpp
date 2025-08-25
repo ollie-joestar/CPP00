@@ -17,6 +17,6 @@ int main(int argc, char *argv[]) {
 			std::cout << static_cast<char>(toupper(c));
 		}
 	}
-	std::cout << "\n";
+	std::cout << std::endl;
 	return 0;
 }
