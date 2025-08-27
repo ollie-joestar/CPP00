@@ -6,7 +6,7 @@
 /*   By: oohnivch <oohnivch@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 11:36:00 by oohnivch          #+#    #+#             */
-/*   Updated: 2025/08/27 13:11:29 by oohnivch         ###   ########.fr       */
+/*   Updated: 2025/08/27 14:08:01 by oohnivch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,14 @@ std::string	cleanUpString(const std::string &str) {
 		}
 	}
 	return cleaned;
+}
+
+bool	isAscii(const std::string &str) {
+	for (size_t i = 0; i < str.length(); i++) {
+		if (static_cast<unsigned char>(str[i]) > 127)
+			return false;
+	}
+	return true;
 }
 
 bool	checkNumber(const std::string &str) {
@@ -79,6 +87,10 @@ bool	PhoneBook::addContact() {
 			std::cout << "\nInput error. Contact not added." << std::endl;
 		return false;
 	}
+	if (!isAscii(fName)) {
+		std::cout << "First name contains non-ASCII characters. Contact not added." << std::endl;
+		return false;
+	}
 	fName = cleanUpString(fName);
 
 	std::cout << "Enter Last Name: ";
@@ -95,6 +107,10 @@ bool	PhoneBook::addContact() {
 			return false;
 		}
 	}
+	if (!isAscii(lName)) {
+		std::cout << "Last name contains non-ASCII characters. Contact not added." << std::endl;
+		return false;
+	}
 	lName = cleanUpString(lName);
 
 	std::cout << "Enter Nickname: ";
@@ -103,6 +119,10 @@ bool	PhoneBook::addContact() {
 			std::cout << "You need a nickname. for example nOObmaster69" << std::endl;
 		else
 			std::cout << "\nInput error. Contact not added." << std::endl;
+		return false;
+	}
+	if (!isAscii(nName)) {
+		std::cout << "Nickname contains non-ASCII characters. Contact not added." << std::endl;
 		return false;
 	}
 	nName = cleanUpString(nName);
@@ -127,6 +147,10 @@ bool	PhoneBook::addContact() {
 			std::cout << "Spill the tea. I know you have some" << std::endl;
 		else
 			std::cout << "\nInput error. Contact not added." << std::endl;
+		return false;
+	}
+	if (!isAscii(dSecret)) {
+		std::cout << "Darkest secret contains non-ASCII characters. Contact not added." << std::endl;
 		return false;
 	}
 	dSecret = cleanUpString(dSecret);
