@@ -1,5 +1,15 @@
 #include "contact.hpp"
 
+Contact::Contact() {
+	firstName = "";
+	lastName = "";
+	nickname = "";
+	phoneNumber = "";
+	darkestSecret = "";
+}
+
+Contact::~Contact() {}
+
 void Contact::setContactInfo(std::string fName, std::string lName,
 							 std::string nName, std::string pNumber,
 							 std::string dSecret) {
@@ -29,14 +39,3 @@ std::string Contact::getPhoneNumber() const {
 std::string Contact::getDarkestSecret() const {
 	return darkestSecret;
 }
-
-Contact::Contact() {
-	firstName = "";
-	lastName = "";
-	nickname = "";
-	phoneNumber = "";
-	darkestSecret = "";
-}
-
-Contact::~Contact() {}
-
