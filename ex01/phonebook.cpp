@@ -6,16 +6,60 @@
 /*   By: oohnivch <oohnivch@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 11:36:00 by oohnivch          #+#    #+#             */
-/*   Updated: 2025/08/25 15:17:14 by oohnivch         ###   ########.fr       */
+/*   Updated: 2025/08/27 13:11:29 by oohnivch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "phonebook.hpp"
-#include <iomanip>
 
-PhoneBook::PhoneBook() : contactIndex(0) {}
+PhoneBook::PhoneBook() : contactNumber(0) {}
 
 PhoneBook::~PhoneBook() {}
+
+std::string formatForDisplay(const std::string &str) {
+	if (str.length() > 10)
+		return str.substr(0, 9) + ".";
+	return str;
+}
+
+std::string	cleanUpString(const std::string &str) {
+	std::string cleaned;
+	bool inEmptyness = false;
+
+	for (size_t i = 0; i < str.length(); i++) {
+		if (std::isspace(str[i])) {
+			if (!inEmptyness && !cleaned.empty()) {
+				cleaned += ' ';
+				inEmptyness = true;
+			}
+		} else {
+			cleaned += str[i];
+			inEmptyness = false;
+		}
+	}
+	return cleaned;
+}
+
+bool	checkNumber(const std::string &str) {
+	size_t	i = 0;
+
+	while (i < str.length() && std::isspace(str[i]))
+		i++;
+	if (i == str.length())
+		return false;
+	for (; i < str.length(); i++) {
+		if (std::isspace(str[i]))
+			break;
+		if (!std::isdigit(str[i]))
+			return false; 
+	}
+	while (i < str.length()) {
+		if (!std::isspace(str[i]))
+			return false;
+		i++;
+	}
+	return true;
+}
 
 void	PhoneBook::giveHelp() const {
 	std::cout << "ADD:\tAdd a new contact to the phone book." << std::endl;
@@ -24,55 +68,116 @@ void	PhoneBook::giveHelp() const {
 	std::cout << "EXIT:\tExit the phone book application." << std::endl;
 }
 
-void	PhoneBook::addContact() {
+bool	PhoneBook::addContact() {
 	std::string fName, lName, nName, pNumber, dSecret;
 
 	std::cout << "Enter First Name: ";
-	// std::getline(std::cin, fName);
-	std::cin >> fName;
-	std::cout << "Enter Last Name: ";
-	std::cin >> lName;
-	std::cout << "Enter Nickname: ";
-	std::cin >> nName;
-	std::cout << "Enter Phone Number: ";
-	std::cin >> pNumber;
-	std::cout << "Enter Darkest Secret: ";
-	std::cin >> dSecret;
+	if (!std::getline(std::cin, fName) || fName.empty()) {
+		if (fName.empty())
+			std::cout << "No first name? Really?" << std::endl;
+		else
+			std::cout << "\nInput error. Contact not added." << std::endl;
+		return false;
+	}
+	fName = cleanUpString(fName);
 
-	contacts[contactIndex].setContactInfo(fName, lName, nName, pNumber, dSecret);
-	contactIndex++;
-	if (contactIndex >= 8)
-		contactIndex = 0;
+	std::cout << "Enter Last Name: ";
+	if (!std::getline(std::cin, lName) || lName.empty()) {
+		if (lName.empty()) {
+			if (fName == "Adele")
+				std::cout << "Hello, Adele. Welcome to the Phonebook." << std::endl;
+			else {
+				std::cout << "You're not Adele. Gimme Last name" << std::endl;
+				return false;
+			}
+		} else {
+			std::cout << "\nInput error. Contact not added." << std::endl;
+			return false;
+		}
+	}
+	lName = cleanUpString(lName);
+
+	std::cout << "Enter Nickname: ";
+	if (!std::getline(std::cin, nName) || nName.empty()) {
+		if (nName.empty())
+			std::cout << "You need a nickname. for example nOObmaster69" << std::endl;
+		else
+			std::cout << "\nInput error. Contact not added." << std::endl;
+		return false;
+	}
+	nName = cleanUpString(nName);
+
+	std::cout << "Enter Phone Number: ";
+	if (!std::getline(std::cin, pNumber) || pNumber.empty()) {
+		if (pNumber.empty())
+			std::cout << "You need a phone number. It's a PHONEBOOK!!!" << std::endl;
+		else
+			std::cout << "\nInput error. Contact not added." << std::endl;
+		return false;
+	}
+	if (!checkNumber(pNumber)) {
+		std::cout << "Invalid phone number format. Only digits allowed. Contact not added." << std::endl;
+		return false;
+	}
+	pNumber = cleanUpString(pNumber);
+
+	std::cout << "Enter Darkest Secret: ";
+	if (!std::getline(std::cin, dSecret) || dSecret.empty()) {
+		if (dSecret.empty())
+			std::cout << "Spill the tea. I know you have some" << std::endl;
+		else
+			std::cout << "\nInput error. Contact not added." << std::endl;
+		return false;
+	}
+	dSecret = cleanUpString(dSecret);
+
+	contacts[contactNumber % 8].setContactInfo(fName, lName, nName, pNumber, dSecret);
+	contactNumber++;
+	return true;
 }
 
 void	PhoneBook::displayContacts() const {
 	std::cout << "---------------------------------------------" << std::endl;
 	std::cout << "|     Index|First Name| Last Name|  Nickname|" << std::endl;
 	std::cout << "---------------------------------------------" << std::endl;
-	for (int i = 0; i < (contactIndex < 8 ? contactIndex : 8); i++) {
+	for (int i = 0; i < (contactNumber < 8 ? contactNumber : 8); i++) {
 		std::cout << "|" << std::setw(10) << i + 1 << "|"
-		          << std::setw(10) << (contacts[i].getFirstName().length() > 10 ? contacts[i].getFirstName().substr(0, 9) + "." : contacts[i].getFirstName()) << "|"
-		          << std::setw(10) << (contacts[i].getLastName().length() > 10 ? contacts[i].getLastName().substr(0, 9) + "." : contacts[i].getLastName()) << "|"
-		          << std::setw(10) << (contacts[i].getNickname().length() > 10 ? contacts[i].getNickname().substr(0, 9) + "." : contacts[i].getNickname()) << "|" << std::endl;
+			<< std::setw(10) << formatForDisplay(contacts[i].getFirstName()) << "|"
+			<< std::setw(10) << formatForDisplay(contacts[i].getLastName()) << "|"
+			<< std::setw(10) << formatForDisplay(contacts[i].getNickname()) << "|"
+			<< std::endl;
 	}
 	std::cout << "---------------------------------------------" << std::endl;
 }
 
-void	PhoneBook::searchContact() const {
+bool	PhoneBook::searchContact() const {
+	std::string indexStr;
 	int index;
 
 	std::cout << "Enter the index of the contact to view details: ";
-	std::cin >> index;
-	if (std::cin.fail() || index < 1 || index > 8 || index > contactIndex) {
-		std::cin.clear();
-		std::cin.ignore(10000, '\n');
-		std::cout << "Invalid index." << std::endl;
-		return;
+	if (!std::getline(std::cin, indexStr)) {
+		std::cout << "\nEOF. Returning to main menu." << std::endl;
+		return false;
 	}
+	if (indexStr.empty()) {
+		std::cout << "No index entered. Returning to main menu." << std::endl;
+		return false;
+	}
+	if (indexStr.length() > 1 || !std::isdigit(indexStr[0])) {
+		std::cout << "Invalid index." << std::endl;
+		return false;
+	}
+	index = std::atoi(indexStr.c_str());
+	if (index < 1 || index > 8 || index > contactNumber) {
+		std::cout << "Invalid index." << std::endl;
+		return false;
+	}
+
 	const Contact &contact = contacts[index - 1];
 	std::cout << "First Name: " << contact.getFirstName() << std::endl;
 	std::cout << "Last Name: " << contact.getLastName() << std::endl;
 	std::cout << "Nickname: " << contact.getNickname() << std::endl;
 	std::cout << "Phone Number: " << contact.getPhoneNumber() << std::endl;
 	std::cout << "Darkest Secret: " << contact.getDarkestSecret() << std::endl;
+	return true;
 }

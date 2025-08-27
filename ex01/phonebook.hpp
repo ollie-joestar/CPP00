@@ -2,18 +2,22 @@
 #define PHONEBOOK_HPP
 
 #include "contact.hpp"
+#include <iomanip>
+#include <cstdlib>
 
 class PhoneBook {
    private:
 	Contact contacts[8];
-	int contactIndex;
+	int contactNumber;
 
    public:
 	PhoneBook();
 	~PhoneBook();
-	void addContact();
+
+	bool addContact();
+
 	void displayContacts() const;
-	void searchContact() const;
+	bool searchContact() const;
 	void giveHelp() const;
 };
 
