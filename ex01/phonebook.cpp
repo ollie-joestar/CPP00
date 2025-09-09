@@ -57,13 +57,6 @@ bool	checkNumber(const std::string &str) {
 	return true;
 }
 
-void	PhoneBook::giveHelp() const {
-	std::cout << "ADD:\tAdd a new contact to the phone book." << std::endl;
-	std::cout << "SEARCH:\tDisplay a list of contacts and view details of a specific contact." << std::endl;
-	std::cout << "HELP:\tDisplay this help message." << std::endl;
-	std::cout << "EXIT:\tExit the phone book application." << std::endl;
-}
-
 bool	PhoneBook::addContact() {
 	std::string fName, lName, nName, pNumber, dSecret;
 
@@ -84,10 +77,11 @@ bool	PhoneBook::addContact() {
 	std::cout << "Enter Last Name: ";
 	if (!std::getline(std::cin, lName) || lName.empty()) {
 		if (lName.empty()) {
-			if (fName == "Adele")
+			if (fName == "Adele") {
 				std::cout << "Hello, Adele. Welcome to the Phonebook." << std::endl;
-			else {
-				std::cout << "You're not Adele. Gimme Last name" << std::endl;
+				lName = "Laurie Blue Adkins";
+			} else {
+				std::cout << "You're not Adele. Gimme some last name" << std::endl;
 				return false;
 			}
 		} else {

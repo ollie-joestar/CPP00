@@ -5,7 +5,7 @@ int	main(void) {
 	PhoneBook phoneBook;
 
 	std::cout << "Welcome to your PhoneBook!" << std::endl;
-	std::cout << "Available commands: ADD, SEARCH, HELP, EXIT" << std::endl;
+	std::cout << "Available commands: ADD, SEARCH or EXIT" << std::endl;
 	while (true) {
 		std::cout << "Enter command: ";
 		// Handle EOF (Ctrl+D)
@@ -32,10 +32,8 @@ int	main(void) {
 					return 1;
 				}
 			}
-		} else if (command == "HELP") {
-			phoneBook.giveHelp();
-		} else if (!command.empty()) {
-			std::cout << "Invalid command. Please enter ADD, SEARCH, HELP or EXIT." << std::endl;
+		// } else if (!command.empty()) {
+		// 	std::cout << "Invalid command. Please enter ADD, SEARCH or EXIT." << std::endl;
 		}
 	}
 }

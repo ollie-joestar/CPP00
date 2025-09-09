@@ -20,7 +20,6 @@ class PhoneBook {
 
 	void displayContacts() const;
 	bool searchContact() const;
-	void giveHelp() const;
 };
 
 #endif // PHONEBOOK_HPP

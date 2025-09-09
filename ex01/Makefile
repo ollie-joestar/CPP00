@@ -6,12 +6,12 @@
 #    By: oohnivch <oohnivch@student.42vienna.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/13 10:52:52 by oohnivch          #+#    #+#              #
-#    Updated: 2025/08/27 11:08:40 by oohnivch         ###   ########.fr        #
+#    Updated: 2025/09/09 12:07:51 by oohnivch         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= phonebook
-CC		= c++ -Wall -Wextra -Werror -std=c++98 -g
+CC		= c++ -Wall -Wextra -Werror -std=c++98
 
 SRC		= phonebook.cpp \
 		  contact.cpp \
